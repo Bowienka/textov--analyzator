@@ -32,10 +32,17 @@ in modern oceans. Other fish such as paddlefish,
 garpike and stingray are also present.'''
 ]
 
-oddelovac = "-"*40
-occurences = "LEN|   OCCURENCES   |NR."
-
+# 1. input přihlašovací jméno a heslo
+#+------+-------------+
+#| user |   password  |
+#+------+-------------+
+#| bob  |     123     |
+#| ann  |   pass123   |
+#| mike | password123 |
+#| liz  |   pass123   |
+#+------+-------------+
 user = {"bob": "123", "ann" : "pass123", "mike": "password123", "liz": "pass123"}
+
 name = input("Zadej jméno: ")
 
 if name in user.keys():
@@ -44,21 +51,33 @@ else:
     print("unregistered user, terminating the program..")
     quit()
 
-if (name, password) in user.items():
+if (name, password) in user.items(): #https://note.nkmk.me/en/python-dict-in-values-items/
     print(f"Welcome to the app, {name}.")
     print("We have 3 texts to be analyzed.")
 else:
     print("unregistered user, terminating the program..")
     quit()
+
+oddelovac = "-"*40
+
 print(oddelovac)
+# pokud jméno a heslo nesouhlasí, upozorní: unregistered user, terminating the program.. a ukonči program (quit), jinak pokračuj.
+# 2. uživatel si vybere mezi třemi text (input: Vyber si text: 1, 2, 3) - je třeba posunout indexování, pokud zadá špatné číslo nebo jiný vstup (if vstup not range(1,3), program uživatele upozorní a ukončí se
 
 text = int(input("Enter a number btw. 1 and 3 to select: "))
 if int(text) >= 1 and int(text) <= 3:
     text_ed = TEXTS[int(text) - 1]
 print(oddelovac)
 
+# 3. pro vybraný text program spočítá:
+#   a) počet slov
+#   b) počet slov začínajících velkým písmenem,
+#   c) počet slov psaných velkými písmeny,
+#   d) počet slov psaných malými písmeny,
+#   e) počet čísel (ne cifer),
+#   f) sumu všech čísel (ne cifer) v textu.
 
-words = text_ed.split() 
+words = text_ed.split() # deafultně odděluje pomocí mezer, složitěji (" ")
 words_ed = []
 words_only = []
 titles = []
@@ -82,6 +101,7 @@ for word in words_only:
         uppers.append(word)
     else: 
         titles.append(word)
+
 print(f"There are {len(titles)} titlecase words.")
 print(f"There are {len(uppers)} uppercase words.")
 print(f"There are {len(lowers)} lowecase words.")
@@ -89,6 +109,7 @@ print(f"There are {len(lowers)} lowecase words.")
 for word in words_ed:
     if word.isnumeric():
         numbers.append(word)
+
 print(f"There are {len(numbers)} numeric strings.")
 
 for number in numbers:
@@ -96,10 +117,18 @@ for number in numbers:
 print(f"The sum of all numbers {sum(figures)}.")
 print(oddelovac)
 
+# g) délka jednotlivých slov ve sloupcovém grafu
+
+#words_len = enumerate(words_only)
+#for index, word in words_len:
+#   index = len(word)
+ #   print(words_len)
+
 words_len = []
 for word in words_only:
     word = len(word)
-    words_len.append(word)
+    words_len.append(word)  #!!! nevloží se opakující se slova, vyzkoušena vorba listu  i tuplu
+
 
 result = {}
 for len in words_len:
@@ -107,10 +136,13 @@ for len in words_len:
         result[len] = 1
     else:
         result[len] += 1
+
+occurences = "LEN|   OCCURENCES   |NR."
 print(occurences)
-print(oddelovac)
 
 result_sort = sorted(result.items())
 for index, tupl in result_sort:
     star = "*"*int(tupl)
     print(f"{index:3}|{star:16}|{tupl:3}")
+
+

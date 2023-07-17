@@ -51,3 +51,6 @@ words_len = {}
 for word in words_only:
     words_len[word] = len(word) #!!! nevloží se opakující se slova, vyzkoušena vorba listu  i tuplu
 print(words_len)
+
+
+print(f"{index}|{star:16}|{tupl}".center(24))
